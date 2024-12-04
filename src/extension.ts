@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { GraphEditorProvider } from './graphEditor';
+import { GraphEditorProvider } from './graphEditorProvider';
 import { registerActivateGraphEditor } from './commands/activateGraphEditor';
 
 // This method is called when your extension is activated

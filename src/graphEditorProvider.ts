@@ -14,14 +14,13 @@ import { getNonce } from './utils';
  * - Synchronizing changes between a text document and a custom editor.
  */
 export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
-
 	public static register(context: vscode.ExtensionContext): vscode.Disposable {
 		const provider = new GraphEditorProvider(context);
 		const providerRegistration = vscode.window.registerCustomEditorProvider(GraphEditorProvider.viewType, provider);
 		return providerRegistration;
 	}
 
-	private static readonly viewType = 'tinykube.graph';
+	public static readonly viewType = 'tinykube.graph';
 
 	private static readonly scratchCharacters = ['😸', '😹', '😺', '😻', '😼', '😽', '😾', '🙀', '😿', '🐱'];
 
