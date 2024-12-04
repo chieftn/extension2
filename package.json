@@ -12,12 +12,41 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "extension2.helloWorld",
-        "title": "Hello World"
+      "commands": [
+        {
+          "command": "graphEditor.open",
+          "title": "Edit graph",
+          "category": "Graph Editor",
+          "icon": "$(preview)"
+        }
+      ],
+      "customEditors": [
+        {
+          "viewType": "tinykube.graph",
+          "displayName": "Tinykube Graph",
+          "selector": [
+            {
+              "filenamePattern": "*.graph"
+            }
+          ],
+          "priority": "option"
+        }
+      ],
+      "menus": {
+        "commandPalette": [
+          {
+            "command": "graphEditor.open",
+            "when": "resourceExtname == .graph"
+          }
+        ],
+        "editor/title": [
+          {
+            "when": "resourceExtname == .graph",
+            "command": "graphEditor.open",
+            "group": "navigation"
+          }
+        ]
       }
-    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
