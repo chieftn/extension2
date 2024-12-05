@@ -78,6 +78,10 @@ export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
                 case 'delete':
                     this.deleteScratch(document, e.id);
                     return;
+                case 'helloworld':
+                    console.log('hello');
+                    vscode.window.showInformationMessage('Hello world from react');
+                    return;
             }
         });
 
