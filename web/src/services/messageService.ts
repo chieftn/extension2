@@ -5,7 +5,7 @@ export const sendMessage = () => {
         console.log('sending message');
         vscode.postMessage({ type: 'helloworld' });
     } catch (e) {
-        console.log('ruh roh');
+        console.log('ruh roh 1');
         console.log(e);
     }
 };
