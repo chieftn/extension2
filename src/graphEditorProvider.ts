@@ -1,36 +1,17 @@
 import * as vscode from 'vscode';
 import { getNonce } from './utils';
 
-/**
- * Provider for cat scratch editors.
- *
- * Cat scratch editors are used for `.cscratch` files, which are just json files.
- * To get started, run this extension and open an empty `.cscratch` file in VS Code.
- *
- * This provider demonstrates:
- *
- * - Setting up the initial webview for a custom editor.
- * - Loading scripts and styles in a custom editor.
- * - Synchronizing changes between a text document and a custom editor.
- */
 export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
+    public static readonly viewType = 'tinykube.graph';
+
     public static register(context: vscode.ExtensionContext): vscode.Disposable {
         const provider = new GraphEditorProvider(context);
         const providerRegistration = vscode.window.registerCustomEditorProvider(GraphEditorProvider.viewType, provider);
         return providerRegistration;
     }
 
-    public static readonly viewType = 'tinykube.graph';
-
-    private static readonly scratchCharacters = ['😸', '😹', '😺', '😻', '😼', '😽', '😾', '🙀', '😿', '🐱'];
-
     constructor(private readonly context: vscode.ExtensionContext) {}
 
-    /**
-     * Called when our custom editor is opened.
-     *
-     *
-     */
     public async resolveCustomTextEditor(
         document: vscode.TextDocument,
         webviewPanel: vscode.WebviewPanel,
@@ -92,34 +73,25 @@ export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
      * Get the static html used for the editor webviews.
      */
     private getHtmlForWebview(webview: vscode.Webview): string {
-        // Local path to script and css for the webview
+        const nonce = getNonce();
         const scriptUri = webview.asWebviewUri(
             vscode.Uri.joinPath(this.context.extensionUri, 'web', 'dist', 'index.js')
         );
 
-        // Use a nonce to whitelist which scripts can be run
-        const nonce = getNonce();
-
-        return /* html */ `
-			<!DOCTYPE html>
-			<html lang="en">
-			<head>
-				<meta charset="UTF-8">
-
-				<!--
-				Use a content security policy to only allow loading images from https or from our extension directory,
-				and only allow scripts that have a specific nonce.
-				-->
-				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${webview.cspSource}; style-src ${webview.cspSource}; script-src 'nonce-${nonce}';">
-
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title>Cat Scratch</title>
-			</head>
-			<body>
-				<div id="root"></div>
-				<script nonce="${nonce}" src="${scriptUri}"></script>
-			</body>
-			</html>`;
+        return `
+            <!DOCTYPE html>
+            <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${webview.cspSource}; style-src ${webview.cspSource}; script-src 'nonce-${nonce}';">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title></title>
+                </head>
+                <body>
+                    <div id="root"></div>
+                    <script nonce="${nonce}" src="${scriptUri}"></script>
+                </body>
+            </html>`;
     }
 
     /**
@@ -127,18 +99,6 @@ export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
      */
     private addNewScratch(document: vscode.TextDocument) {
         const json = this.getDocumentAsJson(document);
-        const character =
-            GraphEditorProvider.scratchCharacters[
-                Math.floor(Math.random() * GraphEditorProvider.scratchCharacters.length)
-            ];
-        json.scratches = [
-            ...(Array.isArray(json.scratches) ? json.scratches : []),
-            {
-                id: getNonce(),
-                text: character,
-                created: Date.now(),
-            },
-        ];
 
         return this.updateTextDocument(document, json);
     }
