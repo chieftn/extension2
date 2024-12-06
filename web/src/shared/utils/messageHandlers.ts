@@ -1,6 +1,4 @@
-import { VisualStudioCode } from './visualStudioCode';
-
-export type MessageType = 'document';
+export type MessageType = 'document' | 'refresh';
 export type MessageHandler = <T>(payload: T) => void;
 
 export interface Message<MessageType, T> {
@@ -13,10 +11,10 @@ export type DocumentMessage = Message<'document', string>;
 export class MessageHandlers {
     public static registeredHandlers: Record<MessageType, MessageHandler[]> = {
         document: [],
+        refresh: [],
     };
 
     public static initialize() {
-        console.log('initializing');
         window.addEventListener('message', (event) => {
             const message = event.data;
 
@@ -24,9 +22,6 @@ export class MessageHandlers {
                 console.log('message received');
                 const handlers = MessageHandlers.getMessageHandlers('document');
                 handlers.forEach((s) => s(message.text));
-
-                const state = { ...VisualStudioCode.getState(), document: message.text };
-                VisualStudioCode.setState({ ...state, document: message.text });
             }
         });
     }

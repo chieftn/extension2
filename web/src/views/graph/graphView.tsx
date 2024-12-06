@@ -5,7 +5,7 @@ import { Field, Input, type InputOnChangeData } from '@fluentui/react-components
 
 export const GraphView: React.FC = () => {
     // const {} = useGraph();
-    const { text, update, updates } = useDocument();
+    const { text, update } = useDocument();
 
     const onChange = (ev: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
         update(data.value);
@@ -18,12 +18,6 @@ export const GraphView: React.FC = () => {
             <Field label="Contents">
                 <Input placeholder={'contents'} value={text || ''} onChange={onChange} />
             </Field>
-
-            <ul>
-                {updates.map((update) => (
-                    <li>{update}</li>
-                ))}
-            </ul>
         </>
     );
 };

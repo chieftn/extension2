@@ -24,15 +24,12 @@ export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
         webviewPanel.webview.html = this.getHtmlForWebview(webviewPanel.webview);
 
         function updateWebview() {
-            console.log('updating web view');
             webviewPanel.webview.postMessage({
                 type: 'document',
                 text: document.getText(),
             });
         }
         const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument((e) => {
-            console.log(e.document.uri);
-            console.log(document.uri);
             if (e?.document.uri.toString() === document.uri.toString()) {
                 updateWebview();
             }
@@ -46,8 +43,14 @@ export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
 
         // Receive message from the webview.
         webviewPanel.webview.onDidReceiveMessage((e) => {
+            if (e.type === 'refresh') {
+                updateWebview();
+                return;
+            }
+
             if (e.type === 'document') {
                 console.log('document');
+                return;
             }
         });
 
