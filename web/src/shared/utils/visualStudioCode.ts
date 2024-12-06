@@ -1,27 +1,21 @@
-import type { Message } from '../models/messages';
+import type { Message } from './messageHandlers';
 
-export type VisualStudioCode = ReturnType<typeof acquireVsCodeApi>;
 export interface VisualStudioCodeState {
     document: string;
 }
 
-let visualStudioCode: VisualStudioCode | undefined;
-export const getVisualStudioCode = (): VisualStudioCode => {
-    if (!visualStudioCode) {
-        visualStudioCode = acquireVsCodeApi();
+export class VisualStudioCode {
+    static api = acquireVsCodeApi();
+
+    public static postMessage(message: Message<unknown, unknown>): void {
+        VisualStudioCode.api.postMessage(message);
     }
 
-    return visualStudioCode;
-};
+    public static getState(): VisualStudioCodeState {
+        return (VisualStudioCode.api.getState() as VisualStudioCodeState) || { document: '' };
+    }
 
-export const postMessage = (message: Message<unknown, unknown>): void => {
-    getVisualStudioCode().postMessage(message);
-};
-
-export const getState = (): VisualStudioCodeState => {
-    return (getVisualStudioCode().getState() as VisualStudioCodeState) || { document: '' };
-};
-
-export const setState = (state: VisualStudioCodeState): VisualStudioCodeState => {
-    return getVisualStudioCode().setState(state);
-};
+    public static setState(state: VisualStudioCodeState): VisualStudioCodeState {
+        return VisualStudioCode.api.setState(state);
+    }
+}
