@@ -24,19 +24,23 @@ export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
         webviewPanel.webview.html = this.getHtmlForWebview(webviewPanel.webview);
 
         function updateWebview() {
+            console.log('updating web view');
             webviewPanel.webview.postMessage({
                 type: 'document',
                 text: document.getText(),
             });
         }
         const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument((e) => {
-            if (e.document.uri.toString() === document.uri.toString()) {
+            console.log(e.document.uri);
+            console.log(document.uri);
+            if (e?.document.uri.toString() === document.uri.toString()) {
                 updateWebview();
             }
         });
 
         // Make sure we get rid of the listener when our editor is closed.
         webviewPanel.onDidDispose(() => {
+            console.log('dispose');
             changeDocumentSubscription.dispose();
         });
 

@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { GraphView } from './views/graph/graphView';
 import { MessageHandlers } from './shared/utils/messageHandlers';
 
+console.log('here we are');
 MessageHandlers.initialize();
 
 const domNode = document.getElementById('root');
