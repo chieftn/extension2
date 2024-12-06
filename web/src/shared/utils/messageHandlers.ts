@@ -19,7 +19,6 @@ export class MessageHandlers {
             const message = event.data;
 
             if ((message.type as MessageType) === 'document') {
-                console.log('message received');
                 const handlers = MessageHandlers.getMessageHandlers('document');
                 handlers.forEach((s) => s(message.text));
             }

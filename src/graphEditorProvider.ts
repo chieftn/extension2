@@ -17,7 +17,6 @@ export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
         webviewPanel: vscode.WebviewPanel,
         _token: vscode.CancellationToken
     ): Promise<void> {
-        // Setup initial content for the webview
         webviewPanel.webview.options = {
             enableScripts: true,
         };
@@ -35,21 +34,20 @@ export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
             }
         });
 
-        // Make sure we get rid of the listener when our editor is closed.
         webviewPanel.onDidDispose(() => {
-            console.log('dispose');
             changeDocumentSubscription.dispose();
         });
 
-        // Receive message from the webview.
         webviewPanel.webview.onDidReceiveMessage((e) => {
             if (e.type === 'refresh') {
                 updateWebview();
                 return;
             }
 
-            if (e.type === 'document') {
-                console.log('document');
+            if (e.type === 'documentUpdate') {
+                const edit = new vscode.WorkspaceEdit();
+                edit.replace(document.uri, new vscode.Range(0, 0, document.lineCount, 0), e.payload);
+                vscode.workspace.applyEdit(edit);
                 return;
             }
         });
@@ -59,9 +57,9 @@ export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
 
     private getHtmlForWebview(webview: vscode.Webview): string {
         const nonce = getNonce();
-        const scriptUri = webview.asWebviewUri(
-            vscode.Uri.joinPath(this.context.extensionUri, 'web', 'dist', 'index.js')
-        );
+
+        const css = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'web', 'dist', 'index.css'));
+        const script = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'web', 'dist', 'index.js'));
 
         return `
             <!DOCTYPE html>
@@ -70,22 +68,13 @@ export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
                     <meta charset="UTF-8">
                     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${webview.cspSource}; style-src ${webview.cspSource}; script-src 'nonce-${nonce}';">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <link rel="stylesheet" href="${css}" />
                     <title></title>
                 </head>
                 <body>
                     <div id="root"></div>
-                    <script nonce="${nonce}" src="${scriptUri}"></script>
+                    <script nonce="${nonce}" src="${script}"></script>
                 </body>
             </html>`;
     }
-
-    // private updateTextDocument(document: vscode.TextDocument, json: any) {
-    //     const edit = new vscode.WorkspaceEdit();
-
-    //     // Just replace the entire document every time for this example extension.
-    //     // A more complete extension should compute minimal edits instead.
-    //     edit.replace(document.uri, new vscode.Range(0, 0, document.lineCount, 0), JSON.stringify(json, null, 2));
-
-    //     return vscode.workspace.applyEdit(edit);
-    // }
 }
