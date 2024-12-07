@@ -20,6 +20,7 @@
     "scripts": {
         "start": "parcel",
         "build": "parcel build",
+        "serve": "parcel serve",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     }

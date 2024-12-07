@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
-import { getNonce } from './utils';
+import { getNonce } from './utils/crypto';
+import { getThemeType } from './utils/theme';
 
 export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
     public static readonly viewType = 'tinykube.graph';
@@ -22,25 +23,38 @@ export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
         };
         webviewPanel.webview.html = this.getHtmlForWebview(webviewPanel.webview);
 
-        function updateWebview() {
+        function sendDocument() {
             webviewPanel.webview.postMessage({
-                type: 'document',
-                text: document.getText(),
+                type: 'documentResponse',
+                payload: document.getText(),
             });
         }
+
+        function sendTheme() {
+            webviewPanel.webview.postMessage({
+                type: 'themeResponse',
+                payload: getThemeType(vscode.window.activeColorTheme.kind),
+            });
+        }
+
         const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument((e) => {
             if (e?.document.uri.toString() === document.uri.toString()) {
-                updateWebview();
+                sendDocument();
             }
+        });
+
+        const themeSubscription = vscode.window.onDidChangeActiveColorTheme((e) => {
+            sendTheme();
         });
 
         webviewPanel.onDidDispose(() => {
             changeDocumentSubscription.dispose();
+            themeSubscription.dispose();
         });
 
         webviewPanel.webview.onDidReceiveMessage((e) => {
-            if (e.type === 'refresh') {
-                updateWebview();
+            if (e.type === 'documentRequest') {
+                sendDocument();
                 return;
             }
 
@@ -50,9 +64,14 @@ export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
                 vscode.workspace.applyEdit(edit);
                 return;
             }
+
+            if (e.type === 'themeRequest') {
+                sendTheme();
+                return;
+            }
         });
 
-        updateWebview();
+        sendDocument();
     }
 
     private getHtmlForWebview(webview: vscode.Webview): string {
