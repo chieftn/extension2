@@ -77,8 +77,8 @@ export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
     private getHtmlForWebview(webview: vscode.Webview): string {
         const nonce = getNonce();
 
-        const css = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'web', 'dist', 'index.css'));
-        const script = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'web', 'dist', 'index.js'));
+        const css = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'web', 'build', 'index.css'));
+        const script = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'web', 'build', 'index.js'));
 
         return `
             <!DOCTYPE html>

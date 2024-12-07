@@ -12,14 +12,17 @@
         "@types/react": "^18.3.13",
         "@types/react-dom": "^18.3.1",
         "@types/vscode-webview": "^1.57.5",
+        "@vitejs/plugin-react": "^4.3.4",
         "parcel": "^2.13.2",
         "process": "^0.11.10",
-        "typescript": "^5.7.2"
+        "typescript": "^5.7.2",
+        "vite": "^6.0.3"
     },
-    "source": "src/index.tsx",
     "scripts": {
-        "start": "parcel",
-        "build": "parcel build",
+        "start": "vite",
+        "build": "tsc && vite build",
+        "build-watch": "tsc && vite build --watch",
+        "preview": "vite preview",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     }
