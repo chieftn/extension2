@@ -38,6 +38,10 @@ export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
         }
 
         const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument((e) => {
+            if (e?.document.uri.toString() !== document.uri.toString()) {
+                return;
+            }
+
             if (
                 e.reason === vscode.TextDocumentChangeReason.Redo ||
                 e.reason === vscode.TextDocumentChangeReason.Undo
@@ -46,8 +50,9 @@ export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
                 return;
             }
 
-            if (!webviewPanel.active && e?.document.uri.toString() === document.uri.toString()) {
+            if (!webviewPanel.active) {
                 sendDocument();
+                return;
             }
         });
 
