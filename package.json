@@ -12,41 +12,41 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
-      "commands": [
-        {
-          "command": "graphEditor.open",
-          "title": "Edit graph",
-          "category": "Graph Editor",
-          "icon": "$(preview)"
-        }
-      ],
-      "customEditors": [
-        {
-          "viewType": "tinykube.graph",
-          "displayName": "Tinykube Graph",
-          "selector": [
-            {
-              "filenamePattern": "*.graph"
-            }
-          ],
-          "priority": "option"
-        }
-      ],
-      "menus": {
-        "commandPalette": [
+    "commands": [
+      {
+        "command": "graphEditor.open",
+        "title": "Edit graph",
+        "category": "Graph Editor",
+        "icon": "$(preview)"
+      }
+    ],
+    "customEditors": [
+      {
+        "viewType": "dataflow.graph",
+        "displayName": "Dataflow Graph",
+        "selector": [
           {
-            "command": "graphEditor.open",
-            "when": "resourceExtname == .graph"
+            "filenamePattern": "*.dataflow.yaml"
           }
         ],
-        "editor/title": [
-          {
-            "when": "resourceExtname == .graph",
-            "command": "graphEditor.open",
-            "group": "navigation"
-          }
-        ]
+        "priority": "option"
       }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "graphEditor.open",
+          "when": "resourceFilename =~ /.dataflow.yaml/"
+        }
+      ],
+      "editor/title": [
+        {
+          "when": "resourceFilename =~ /.dataflow.yaml/",
+          "command": "graphEditor.open",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

@@ -3,7 +3,7 @@ import { getNonce } from './utils/crypto';
 import { getThemeType } from './utils/theme';
 
 export class GraphEditorProvider implements vscode.CustomTextEditorProvider {
-    public static readonly viewType = 'tinykube.graph';
+    public static readonly viewType = 'dataflow.graph';
 
     public static register(context: vscode.ExtensionContext): vscode.Disposable {
         const provider = new GraphEditorProvider(context);
