@@ -17,11 +17,11 @@ export const GraphView: React.FC = () => {
     return (
         <div className={rootStyle}>
             <PanelGroup direction={'horizontal'}>
-                <Panel style={{ overflow: 'auto' }}>
+                <Panel defaultSize={40} minSize={15} style={{ overflow: 'auto' }}>
                     <Form />
                 </Panel>
                 <PanelResizeHandle />
-                <Panel defaultSize={40}>
+                <Panel defaultSize={60} minSize={5}>
                     <Graph />
                 </Panel>
             </PanelGroup>

@@ -22,7 +22,7 @@ export const Graph: React.FC = () => {
 
     return (
         <div className={rootStyle}>
-            <ReactFlow colorMode={type} nodes={initialNodes} edges={initialEdges}>
+            <ReactFlow fitView={true} colorMode={type} nodes={initialNodes} edges={initialEdges}>
                 <Controls />
                 <MiniMap />
                 <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
