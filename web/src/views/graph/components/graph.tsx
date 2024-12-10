@@ -1,7 +1,8 @@
 import * as React from 'react';
+import { makeStyles } from '@fluentui/react-components';
 import { ReactFlow, Controls, MiniMap, Background, BackgroundVariant } from '@xyflow/react';
-import '@xyflow/react/dist/style.css';
 import { useThemeContext } from '@/shared/hooks/useTheme';
+import '@xyflow/react/dist/style.css';
 
 const initialNodes = [
     { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
@@ -9,11 +10,18 @@ const initialNodes = [
 ];
 const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
+export const useGraphStyles = makeStyles({
+    rootStyle: {
+        width: '100%',
+        height: '100%',
+    },
+});
 export const Graph: React.FC = () => {
+    const { rootStyle } = useGraphStyles();
     const { type } = useThemeContext();
 
     return (
-        <div style={{ width: '80vw', height: '80vh' }}>
+        <div className={rootStyle}>
             <ReactFlow colorMode={type} nodes={initialNodes} edges={initialEdges}>
                 <Controls />
                 <MiniMap />

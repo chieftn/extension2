@@ -1,26 +1,24 @@
 import * as React from 'react';
-// import { useGraph } from './hooks/useGraph';
-import { useDocument } from '@/shared/hooks/useDocument';
-import { Field, Input, type InputOnChangeData } from '@fluentui/react-components';
+import { makeStyles } from '@fluentui/react-components';
+import { Form } from './components/form';
 import { Graph } from './components/graph';
 
-export const GraphView: React.FC = () => {
-    // const {} = useGraph();
-    const { text, update } = useDocument();
+export const useGraphViewStyles = makeStyles({
+    rootStyle: {
+        height: '100vh',
+        width: '100wh',
+        display: 'flex',
+        flexDirection: 'row',
+    },
+});
 
-    const onChange = (ev: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
-        update(data.value);
-    };
+export const GraphView: React.FC = () => {
+    const { rootStyle } = useGraphViewStyles();
 
     return (
-        <>
-            <div>{text}</div>
-
-            <Field label="Contents">
-                <Input placeholder={'contents'} value={text || ''} onChange={onChange} />
-            </Field>
-
+        <div className={rootStyle}>
+            <Form />
             <Graph />
-        </>
+        </div>
     );
 };
