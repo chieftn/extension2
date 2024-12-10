@@ -4,10 +4,10 @@ import { useDocument } from '@/shared/hooks/useDocument';
 
 export const useFormStyles = makeStyles({
     rootStyle: {
-        overflowY: 'auto',
         paddingBlockStart: tokens.spacingVerticalL,
         paddingBlockEnd: tokens.spacingVerticalL,
         paddingInline: tokens.spacingHorizontalM,
+        minWidth: '240',
     },
 });
 
@@ -24,60 +24,6 @@ export const Form: React.FC = () => {
             <Field label="Contents">
                 <Input placeholder={'contents'} value={text || ''} onChange={onChange} />
             </Field>
-
-            <ul>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-                <li>me</li>
-            </ul>
         </div>
     );
 };
