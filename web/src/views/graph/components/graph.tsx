@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Dagre from '@dagrejs/dagre';
 import { makeStyles } from '@fluentui/react-components';
 import {
     ReactFlow,
@@ -12,39 +11,12 @@ import {
     useReactFlow,
     Node,
     Edge,
+    MarkerType,
 } from '@xyflow/react';
 import { useThemeContext } from '@/shared/hooks/useTheme';
 import { useGraphContext } from '../hooks/useGraph';
+import { getLayoutedElements, nodeWidth, nodeHeight } from '../utils/layoutUtils';
 import '@xyflow/react/dist/style.css';
-
-const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
-    const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
-    g.setGraph({ rankdir: 'vertical' });
-
-    edges.forEach((edge) => g.setEdge(edge.source, edge.target));
-    nodes.forEach((node) =>
-        g.setNode(node.id, {
-            ...node,
-            width: node.measured?.width ?? 0,
-            height: node.measured?.height ?? 0,
-        })
-    );
-
-    Dagre.layout(g);
-
-    return {
-        nodes: nodes.map((node) => {
-            const position = g.node(node.id);
-            // We are shifting the dagre node position (anchor=center center) to the top left
-            // so it matches the React Flow node anchor point (top left).
-            const x = position.x - (node.measured?.width ?? 0) / 2;
-            const y = position.y - (node.measured?.height ?? 0) / 2;
-
-            return { ...node, position: { x, y } };
-        }),
-        edges,
-    };
-};
 
 export const useGraphStyles = makeStyles({
     rootStyle: {
@@ -54,43 +26,37 @@ export const useGraphStyles = makeStyles({
 });
 export const Graph: React.FC = () => {
     const { rootStyle } = useGraphStyles();
-    const { fitView } = useReactFlow();
     const { type } = useThemeContext();
     const { graph } = useGraphContext();
     const [nodes, setNodes, onNodesChange] = useNodesState<any>([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState<any>([]);
+    const { fitView } = useReactFlow();
 
     React.useEffect(() => {
-        console.log(nodes);
-        const layouted = getLayoutedElements(nodes, edges);
-
-        setNodes([...layouted.nodes]);
-        setEdges([...layouted.edges]);
-
-        window.requestAnimationFrame(() => {
-            fitView();
-        });
-    }, [nodes, edges]);
-
-    React.useEffect(() => {
-        const nodes =
+        const nodes: Node[] =
             graph?.operators.map((s) => ({
                 id: s.id.toString(),
                 position: { x: 0, y: 0 },
                 data: { ...s, label: s.id.toString() },
+                height: nodeHeight,
+                width: nodeWidth,
             })) || [];
 
-        const edges =
+        const edges: Edge[] =
             graph?.edges.map((s) => ({
-                animated: true,
                 source: s.from.toString(),
                 target: s.to.toString(),
                 id: `${s.from}-${s.to}`,
-                markerEnd: { type: 'arrow' },
+                markerEnd: { type: MarkerType.ArrowClosed },
             })) || [];
 
-        setNodes(nodes);
-        setEdges(edges);
+        const layout = getLayoutedElements(nodes, edges);
+        setNodes([...layout.nodes]);
+        setEdges([...layout.edges]);
+
+        window.requestAnimationFrame(() => {
+            fitView();
+        });
     }, [graph]);
 
     return (
@@ -100,6 +66,7 @@ export const Graph: React.FC = () => {
                 colorMode={type}
                 nodes={nodes}
                 edges={edges}
+                nodesConnectable={false}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
             >

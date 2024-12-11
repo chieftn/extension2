@@ -17,8 +17,8 @@ export const GraphView: React.FC = () => {
     const graphContext = useGraph();
 
     return (
-        <GraphContext.Provider value={graphContext}>
-            <div className={rootStyle}>
+        <div className={rootStyle}>
+            <GraphContext.Provider value={graphContext}>
                 <PanelGroup direction={'horizontal'}>
                     <Panel defaultSize={40} minSize={15} style={{ overflow: 'auto' }}>
                         <Form />
@@ -30,7 +30,7 @@ export const GraphView: React.FC = () => {
                         </ReactFlowProvider>
                     </Panel>
                 </PanelGroup>
-            </div>
-        </GraphContext.Provider>
+            </GraphContext.Provider>
+        </div>
     );
 };
