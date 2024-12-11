@@ -19,7 +19,7 @@ import '@xyflow/react/dist/style.css';
 
 const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
     const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
-    g.setGraph({ rankdir: 'vertical', marginy: 500, width: 500, height: 500 });
+    g.setGraph({ rankdir: 'vertical' });
 
     edges.forEach((edge) => g.setEdge(edge.source, edge.target));
     nodes.forEach((node) =>
@@ -57,20 +57,20 @@ export const Graph: React.FC = () => {
     const { fitView } = useReactFlow();
     const { type } = useThemeContext();
     const { graph } = useGraphContext();
-    const [nodes, setNodes] = useNodesState<any>([]);
-    const [edges, setEdges] = useEdgesState<any>([]);
+    const [nodes, setNodes, onNodesChange] = useNodesState<any>([]);
+    const [edges, setEdges, onEdgesChange] = useEdgesState<any>([]);
 
-    // React.useEffect(() => {
-    //     console.log(nodes);
-    //     const layouted = getLayoutedElements(nodes, edges);
+    React.useEffect(() => {
+        console.log(nodes);
+        const layouted = getLayoutedElements(nodes, edges);
 
-    //     setNodes([...layouted.nodes]);
-    //     setEdges([...layouted.edges]);
+        setNodes([...layouted.nodes]);
+        setEdges([...layouted.edges]);
 
-    //     window.requestAnimationFrame(() => {
-    //         fitView();
-    //     });
-    // }, [nodes, edges]);
+        window.requestAnimationFrame(() => {
+            fitView();
+        });
+    }, [nodes, edges]);
 
     React.useEffect(() => {
         const nodes =
@@ -82,19 +82,15 @@ export const Graph: React.FC = () => {
 
         const edges =
             graph?.edges.map((s) => ({
+                animated: true,
                 source: s.from.toString(),
                 target: s.to.toString(),
                 id: `${s.from}-${s.to}`,
+                markerEnd: { type: 'arrow' },
             })) || [];
 
-        const layouted = getLayoutedElements(nodes, edges);
-
-        setNodes([...layouted.nodes]);
-        setEdges([...layouted.edges]);
-
-        window.requestAnimationFrame(() => {
-            fitView();
-        });
+        setNodes(nodes);
+        setEdges(edges);
     }, [graph]);
 
     return (
@@ -104,8 +100,8 @@ export const Graph: React.FC = () => {
                 colorMode={type}
                 nodes={nodes}
                 edges={edges}
-                // onNodesChange={onNodesChange}
-                // onEdgesChange={onEdgesChange}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
             >
                 <Controls />
                 <MiniMap />
