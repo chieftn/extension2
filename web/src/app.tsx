@@ -3,12 +3,6 @@ import { FluentProvider, webDarkTheme, webLightTheme } from '@fluentui/react-com
 import { useTheme, ThemeContext } from './shared/hooks/useTheme';
 import { GraphView } from './views/graph/graphView';
 
-// const useStyles = makeStyles({
-//     button: {
-//         color: 'red',
-//     },
-// });
-
 export const App: React.FC = () => {
     const theme = useTheme();
 

@@ -2,12 +2,12 @@ import { useState, useEffect, useRef, useContext, createContext } from 'react';
 import { VisualStudioCode } from '@/shared/utils/visualStudioCode';
 import { MessageHandlers, type MessageHandler } from '@/shared/utils/messageHandlers';
 
-export interface Document {
+export interface DocumentContext {
     text: string;
     update: (text: string) => void;
     mode: 'fetching' | 'idle';
 }
-export const useDocument = (): Document => {
+export const useDocument = (): DocumentContext => {
     const [document, setDocument] = useState<string | undefined>();
     const documentRef = useRef<undefined | string>();
 
@@ -35,7 +35,7 @@ export const useDocument = (): Document => {
     };
 };
 
-export const DocumentContext = createContext<Document | undefined>(undefined);
+export const DocumentContext = createContext<DocumentContext | undefined>(undefined);
 export const useDocumentContext = () => {
     const context = useContext(DocumentContext);
     if (!context) {

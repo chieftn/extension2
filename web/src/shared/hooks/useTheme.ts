@@ -3,11 +3,11 @@ import { VisualStudioCode } from '@/shared/utils/visualStudioCode';
 import { MessageHandlers, type MessageHandler } from '@/shared/utils/messageHandlers';
 
 export type ThemeType = 'light' | 'dark';
-export interface Theme {
+export interface ThemeContext {
     type?: ThemeType;
 }
 
-export const useTheme = (): Theme => {
+export const useTheme = (): ThemeContext => {
     const [type, setThemeType] = useState<ThemeType | undefined>();
 
     useEffect(() => {
@@ -22,7 +22,7 @@ export const useTheme = (): Theme => {
     };
 };
 
-export const ThemeContext = createContext<Theme | undefined>(undefined);
+export const ThemeContext = createContext<ThemeContext | undefined>(undefined);
 export const useThemeContext = () => {
     const context = useContext(ThemeContext);
     if (!context) {
