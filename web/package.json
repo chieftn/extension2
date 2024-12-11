@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@dagrejs/dagre": "^1.1.4",
         "@fluentui/react-components": "^9.56.4",
         "@xyflow/react": "^12.3.5",
         "react": "^18.2.0",

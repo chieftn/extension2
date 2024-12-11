@@ -4,6 +4,7 @@ import { makeStyles } from '@fluentui/react-components';
 import { useGraph, GraphContext } from './hooks/useGraph';
 import { Form } from './components/form';
 import { Graph } from './components/graph';
+import { ReactFlowProvider } from '@xyflow/react';
 
 export const useGraphViewStyles = makeStyles({
     rootStyle: {
@@ -24,7 +25,9 @@ export const GraphView: React.FC = () => {
                     </Panel>
                     <PanelResizeHandle />
                     <Panel defaultSize={60} minSize={5}>
-                        <Graph />
+                        <ReactFlowProvider>
+                            <Graph />
+                        </ReactFlowProvider>
                     </Panel>
                 </PanelGroup>
             </div>
