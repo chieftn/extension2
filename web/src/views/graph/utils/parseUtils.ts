@@ -1,4 +1,4 @@
-import { parse } from 'yaml';
+import { parse, stringify } from 'yaml';
 import { graphSchema, GraphError, type Graph } from '../types/graph';
 
 export const parseGraph = (text?: string): Graph => {
@@ -8,6 +8,10 @@ export const parseGraph = (text?: string): Graph => {
 
     const graphObject = getGraphObjectFromYaml(text);
     return validateGraphObject(graphObject);
+};
+
+export const serializeGraph = (graph: Graph): string => {
+    return stringify(graph);
 };
 
 export const getGraphObjectFromYaml = (text: string): object => {

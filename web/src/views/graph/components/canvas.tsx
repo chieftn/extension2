@@ -18,14 +18,14 @@ import { useGraphContext } from '../hooks/useGraph';
 import { getLayoutedElements, nodeWidth, nodeHeight } from '../utils/layoutUtils';
 import '@xyflow/react/dist/style.css';
 
-export const useGraphStyles = makeStyles({
+export const useCanvasStyles = makeStyles({
     rootStyle: {
         width: '100%',
         height: '100%',
     },
 });
-export const Graph: React.FC = () => {
-    const { rootStyle } = useGraphStyles();
+export const Canvas: React.FC = () => {
+    const { rootStyle } = useCanvasStyles();
     const { type } = useThemeContext();
     const { graph } = useGraphContext();
     const [nodes, setNodes, onNodesChange] = useNodesState<any>([]);

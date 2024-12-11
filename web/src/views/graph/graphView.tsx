@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { makeStyles } from '@fluentui/react-components';
 import { useGraph, GraphContext } from './hooks/useGraph';
-import { Form } from './components/form';
-import { Graph } from './components/graph';
+import { Operators } from './components/operators';
+import { Canvas } from './components/canvas';
 import { ReactFlowProvider } from '@xyflow/react';
 
 export const useGraphViewStyles = makeStyles({
@@ -21,12 +21,12 @@ export const GraphView: React.FC = () => {
             <GraphContext.Provider value={graphContext}>
                 <PanelGroup direction={'horizontal'}>
                     <Panel defaultSize={40} minSize={15} style={{ overflow: 'auto' }}>
-                        <Form />
+                        <Operators />
                     </Panel>
                     <PanelResizeHandle />
                     <Panel defaultSize={60} minSize={5}>
                         <ReactFlowProvider>
-                            <Graph />
+                            <Canvas />
                         </ReactFlowProvider>
                     </Panel>
                 </PanelGroup>
