@@ -7,7 +7,6 @@ export interface OperatorIdProps {
 }
 export const OperatorId: React.FC<OperatorIdProps> = ({ value, setValue }) => {
     const onChange: InputProps['onChange'] = (ev, data) => {
-        console.log('on change');
         setValue(data.value || '');
     };
 

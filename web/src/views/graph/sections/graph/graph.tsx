@@ -5,9 +5,8 @@ import { Canvas } from './components/canvas';
 
 export const Graph: React.FC = () => {
     const graphContext = useGraph();
-    console.log(graphContext.graphError);
+
     if (graphContext.graphError) {
-        console.log('here');
         return <div>Todo decorate: {graphContext.graphError.message}</div>;
     }
 

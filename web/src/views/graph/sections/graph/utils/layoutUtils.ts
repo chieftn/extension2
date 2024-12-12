@@ -2,11 +2,11 @@ import Dagre from '@dagrejs/dagre';
 import { Node, Edge } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
-const dagreGraph = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 export const nodeWidth = 160;
 export const nodeHeight = 30;
 
 export const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
+    const dagreGraph = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
     dagreGraph.setGraph({ rankdir: 'vertical' });
 
     nodes.forEach((node) => {
@@ -39,6 +39,6 @@ export const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
 
         return newNode;
     });
-    console.log('last');
+
     return { nodes: newNodes, edges };
 };

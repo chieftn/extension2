@@ -16,7 +16,10 @@ import {
 import { useThemeContext } from '@/shared/hooks/useTheme';
 import { useGraphContext } from '../hooks/useGraph';
 import { getLayoutedElements, nodeWidth, nodeHeight } from '../utils/layoutUtils';
+import { CanvasNode } from './canvasNode';
 import '@xyflow/react/dist/style.css';
+
+const nodeTypes = { custom: CanvasNode };
 
 export const useCanvasStyles = makeStyles({
     rootStyle: {
@@ -33,34 +36,33 @@ export const Canvas: React.FC = () => {
     const { fitView } = useReactFlow();
 
     React.useEffect(() => {
-        try {
-            const nodes: Node[] =
-                graph?.operators.map((s) => ({
-                    id: s.id?.toString() || '',
-                    position: { x: 0, y: 0 },
-                    data: { ...s, label: s.id.toString() },
-                    height: nodeHeight,
-                    width: nodeWidth,
-                })) || [];
+        const nodes: Node[] =
+            graph?.operators.map((s) => ({
+                id: s.id?.toString() || '',
+                position: { x: 0, y: 0 },
+                data: { ...s, label: s.id.toString() },
+                height: nodeHeight,
+                width: nodeWidth,
+                type: 'custom',
+            })) || [];
 
-            const edges: Edge[] =
-                graph?.edges.map((s) => ({
-                    source: s.from.toString(),
-                    target: s.to.toString(),
-                    id: `${s.from}-${s.to}`,
-                    markerEnd: { type: MarkerType.ArrowClosed },
-                })) || [];
+        console.log(nodes.length);
+        const edges: Edge[] =
+            graph?.edges.map((s) => ({
+                source: s.from.toString(),
+                target: s.to.toString(),
+                id: `${s.from}-${s.to}`,
+                markerEnd: { type: MarkerType.ArrowClosed },
+            })) || [];
 
-            const layout = getLayoutedElements(nodes, edges);
-            setNodes([...layout.nodes]);
-            setEdges([...layout.edges]);
+        const layout = getLayoutedElements(nodes, edges);
+        console.log(layout);
+        setNodes([...layout.nodes]);
+        setEdges([...layout.edges]);
 
-            window.requestAnimationFrame(() => {
-                fitView();
-            });
-        } catch (e) {
-            console.log(e);
-        }
+        window.requestAnimationFrame(() => {
+            fitView();
+        });
     }, [graph]);
 
     return (
@@ -70,6 +72,7 @@ export const Canvas: React.FC = () => {
                 colorMode={type}
                 nodes={nodes}
                 edges={edges}
+                nodeTypes={nodeTypes}
                 nodesConnectable={false}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
