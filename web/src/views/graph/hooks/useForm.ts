@@ -1,20 +1,20 @@
 import { useMemo, createContext, useContext } from 'react';
 import { useDocument } from '@/shared/hooks/useDocument';
-import { parseGraph, serializeGraph } from '../utils/parseUtils';
-import type { Graph, GraphError } from '../types/graph';
+import { parseForm, serializeForm } from '../utils/parseUtils';
+import type { Form, FormError } from '../types/graph';
 
-export interface GraphContext {
-    graph?: Graph;
-    graphError?: GraphError;
-    update: (graph: Graph) => void;
+export interface FormContext {
+    graph?: Form;
+    graphError?: FormError;
+    update: (graph: Form) => void;
 }
 
-export const useGraph = (): GraphContext => {
+export const useForm = (): FormContext => {
     const { text, update } = useDocument();
 
     const [graph, graphError] = useMemo(() => {
         try {
-            const graph = parseGraph(text);
+            const graph = parseForm(text);
             return [graph, undefined];
         } catch (e) {
             return [undefined, e];
@@ -24,10 +24,10 @@ export const useGraph = (): GraphContext => {
     return {
         graph,
         graphError,
-        update: (updatedGraph) => {
-            if (updatedGraph) {
+        update: (updatedForm) => {
+            if (updatedForm) {
                 console.log('updating!!!!');
-                const graphText = serializeGraph(updatedGraph);
+                const graphText = serializeForm(updatedForm);
                 console.log(graphText);
                 update(graphText);
             }
@@ -35,9 +35,9 @@ export const useGraph = (): GraphContext => {
     };
 };
 
-export const GraphContext = createContext<GraphContext | undefined>(undefined);
-export const useGraphContext = () => {
-    const context = useContext(GraphContext);
+export const FormContext = createContext<FormContext | undefined>(undefined);
+export const useFormContext = () => {
+    const context = useContext(FormContext);
     if (!context) {
         throw new Error('missing graph context');
     }

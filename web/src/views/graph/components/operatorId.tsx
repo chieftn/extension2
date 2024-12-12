@@ -1,10 +1,19 @@
 import * as React from 'react';
-import { Field, Input } from '@fluentui/react-components';
+import { Field, Input, type InputProps } from '@fluentui/react-components';
 
-export const OperatorId: React.FC = () => {
+export interface OperatorIdProps {
+    value: string;
+    setValue(value: string): void;
+}
+export const OperatorId: React.FC<OperatorIdProps> = ({ value, setValue }) => {
+    const onChange: InputProps['onChange'] = (ev, data) => {
+        console.log('on change');
+        setValue(data.value || '');
+    };
+
     return (
         <Field label={'ID'}>
-            <Input />
+            <Input value={value} onChange={onChange} />
         </Field>
     );
 };

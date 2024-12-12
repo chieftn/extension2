@@ -7,7 +7,9 @@ export const parseGraph = (text?: string): Graph => {
     }
 
     const graphObject = getGraphObjectFromYaml(text);
-    return validateGraphObject(graphObject);
+    const parsedGraphObject = validateGraphObject(graphObject);
+
+    return parsedGraphObject;
 };
 
 export const serializeGraph = (graph: Graph): string => {

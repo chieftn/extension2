@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { makeStyles, tokens } from '@fluentui/react-components';
 import { useGraphContext } from '../hooks/useGraph';
-import { Operator } from './operator';
+import { OperatorEdit } from './operatorEdit';
 import { OperatorAdd } from './operatorAdd';
 
 export const useFormStyles = makeStyles({
@@ -20,7 +20,7 @@ export const useFormStyles = makeStyles({
 
 export const Operators: React.FC = () => {
     const { rootStyle, operatorStyle } = useFormStyles();
-    const { graph, graphError } = useGraphContext();
+    const { graph, graphError, update } = useGraphContext();
 
     if (graphError) {
         return <div>Todo decorate: {graphError.message}</div>;
@@ -29,8 +29,8 @@ export const Operators: React.FC = () => {
     return (
         <div className={rootStyle}>
             <div className={operatorStyle}>
-                {graph?.operators.map((s) => (
-                    <Operator />
+                {graph?.operators?.map((s) => (
+                    <OperatorEdit operator={s} graph={graph} update={update} />
                 ))}
             </div>
             <OperatorAdd />
