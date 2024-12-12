@@ -1,5 +1,5 @@
-import { parse, stringify } from 'yaml';
-import { graphSchema, GraphError, type Graph } from '../types/graph';
+import { parse } from 'yaml';
+import { graphSchema, GraphError, type Graph } from '../types/graphSchema';
 
 export const parseGraph = (text?: string): Graph => {
     if (!text) {
@@ -12,11 +12,7 @@ export const parseGraph = (text?: string): Graph => {
     return parsedGraphObject;
 };
 
-export const serializeGraph = (graph: Graph): string => {
-    return stringify(graph);
-};
-
-export const getGraphObjectFromYaml = (text: string): object => {
+export const getGraphObjectFromYaml = (text: string): Graph => {
     try {
         return parse(text);
     } catch (e) {
@@ -28,7 +24,6 @@ export const validateGraphObject = (object: any): Graph => {
     try {
         return graphSchema.parse(object);
     } catch (e) {
-        console.log(e);
         throw new GraphError(e.message, 'schema');
     }
 };

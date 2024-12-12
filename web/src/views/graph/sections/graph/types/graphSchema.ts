@@ -12,20 +12,20 @@ export const operatorTypeSchema = z.enum([
 ]);
 
 export const operatorSchema = z.object({
-    id: z.string().or(z.number()).optional(),
-    function: z.string().optional(),
-    operator: z.string().optional(),
+    id: z.string().min(1).or(z.number()),
+    function: z.string(),
+    operator: z.string(),
 });
 
 export const edgeSchema = z.object({
-    to: z.string().or(z.number()).optional(),
-    from: z.string().or(z.number()).optional(),
-    label: z.string().optional(),
+    to: z.string().or(z.number()),
+    from: z.string().or(z.number()),
+    label: z.string(),
 });
 
 export const graphSchema = z.object({
-    operators: operatorSchema.array().optional(),
-    edges: edgeSchema.array().optional(),
+    operators: operatorSchema.array(),
+    edges: edgeSchema.array(),
 });
 
 export type OperatorType = z.infer<typeof operatorTypeSchema>;

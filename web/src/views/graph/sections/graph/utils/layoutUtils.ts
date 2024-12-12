@@ -10,11 +10,15 @@ export const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
     dagreGraph.setGraph({ rankdir: 'vertical' });
 
     nodes.forEach((node) => {
-        dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
+        if (node.id) {
+            dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
+        }
     });
 
     edges.forEach((edge) => {
-        dagreGraph.setEdge(edge.source, edge.target);
+        if ((edge.source ?? '' !== '') && (edge.target ?? '' !== '')) {
+            dagreGraph.setEdge(edge.source, edge.target);
+        }
     });
 
     Dagre.layout(dagreGraph);
@@ -35,5 +39,6 @@ export const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
 
         return newNode;
     });
+    console.log('last');
     return { nodes: newNodes, edges };
 };

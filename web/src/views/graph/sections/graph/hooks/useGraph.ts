@@ -1,16 +1,15 @@
 import { useMemo, createContext, useContext } from 'react';
-import { useDocument } from '@/shared/hooks/useDocument';
-import { parseGraph, serializeGraph } from '../utils/parseUtils';
-import type { Graph, GraphError } from '../types/graph';
+import { useDocumentContext } from '@/shared/hooks/useDocument';
+import { parseGraph } from '../utils/graphUtils';
+import type { Graph, GraphError } from '../types/graphSchema';
 
 export interface GraphContext {
     graph?: Graph;
     graphError?: GraphError;
-    update: (graph: Graph) => void;
 }
 
 export const useGraph = (): GraphContext => {
-    const { text, update } = useDocument();
+    const { text } = useDocumentContext();
 
     const [graph, graphError] = useMemo(() => {
         try {
@@ -24,14 +23,6 @@ export const useGraph = (): GraphContext => {
     return {
         graph,
         graphError,
-        update: (updatedGraph) => {
-            if (updatedGraph) {
-                console.log('updating!!!!');
-                const graphText = serializeGraph(updatedGraph);
-                console.log(graphText);
-                update(graphText);
-            }
-        },
     };
 };
 
