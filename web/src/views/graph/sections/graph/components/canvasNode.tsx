@@ -21,11 +21,13 @@ const useCanvasNodeStyles = makeStyles({
         flexDirection: 'column',
         height: '100%',
         justifyContent: 'center',
+        overflow: 'hidden',
     },
     nameStyle: {
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         paddingInline: tokens.spacingHorizontalS,
+        whiteSpace: 'nowrap',
     },
 });
 
